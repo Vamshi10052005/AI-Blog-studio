@@ -1,3 +1,4 @@
+import Link from "next/link";
 export default function RegisterPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-gray-950">
@@ -55,6 +56,15 @@ export default function RegisterPage() {
           >
             Create Account
           </button>
+          <p className="mt-6 text-center text-gray-400">
+  Already have an account?{" "}
+  <Link
+    href="/login"
+    className="font-semibold text-blue-500 hover:text-blue-400"
+  >
+    Login
+  </Link>
+</p>
 
         </form>
 
