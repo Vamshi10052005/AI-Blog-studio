@@ -1,3 +1,4 @@
+import Link from "next/link";
 export default function LoginPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-gray-950">
@@ -41,6 +42,15 @@ export default function LoginPage() {
           >
             Login
           </button>
+          <p className="mt-6 text-center text-gray-400">
+  Don't have an account?{" "}
+  <Link
+    href="/register"
+    className="font-semibold text-blue-500 hover:text-blue-400"
+  >
+    Create Account
+  </Link>
+</p>
         </form>
       </div>
     </main>
