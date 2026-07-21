@@ -8,21 +8,29 @@ const {
   getBlogById,
   updateBlog,
   deleteBlog,
+  getDashboardStats,
+  searchBlogs,
 } = require("../controllers/blogController");
 
-// ================= CREATE BLOG =================
+// Dashboard
+router.get("/stats/dashboard", getDashboardStats);
+
+// Search (must be BEFORE /:id)
+router.get("/search", searchBlogs);
+
+// Create
 router.post("/", createBlog);
 
-// ================= GET ALL BLOGS =================
+// Get all blogs
 router.get("/", getBlogs);
 
-// ================= GET SINGLE BLOG =================
+// Get single blog
 router.get("/:id", getBlogById);
 
-// ================= UPDATE BLOG =================
+// Update
 router.put("/:id", updateBlog);
 
-// ================= DELETE BLOG =================
+// Delete
 router.delete("/:id", deleteBlog);
 
 module.exports = router;

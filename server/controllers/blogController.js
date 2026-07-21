@@ -4,8 +4,7 @@ const pool = require("../config/database");
 
 const createBlog = async (req, res) => {
   try {
-    const { title, content, user_id } = req.body;
-
+const { title, content, category, user_id } = req.body;
     if (!title || !content || !user_id) {
       return res.status(400).json({
         message: "All fields are required",
@@ -13,10 +12,10 @@ const createBlog = async (req, res) => {
     }
 
     const newBlog = await pool.query(
-      `INSERT INTO blogs(title, content, user_id)
-       VALUES($1, $2, $3)
-       RETURNING *`,
-      [title, content, user_id]
+      `INSERT INTO blogs(title, content, category, user_id)
+ VALUES($1, $2, $3, $4)
+ RETURNING *`,
+      [title, content, category || "General", user_id]
     );
 
     res.status(201).json({
@@ -101,16 +100,15 @@ const updateBlog = async (req, res) => {
   try {
 
     const { id } = req.params;
-    const { title, content } = req.body;
-
+const { title, content, category } = req.body;
     const updatedBlog = await pool.query(
       `UPDATE blogs
       SET title = $1,
           content = $2
-      WHERE id = $3
-      RETURNING *`,
-      [title, content, id]
-    );
+      category = $3
+WHERE id = $4
+RETURNING *`,
+[title, content, category || "General", id]    );
 
     res.json({
       message: "Blog Updated Successfully",
@@ -156,10 +154,76 @@ const deleteBlog = async (req, res) => {
   }
 };
 
+// ================= DASHBOARD ANALYTICS =================
+
+const getDashboardStats = async (req, res) => {
+  try {
+    const totalBlogsResult = await pool.query(
+      "SELECT COUNT(*) FROM blogs"
+    );
+
+    const totalBlogs = parseInt(totalBlogsResult.rows[0].count);
+
+    // Placeholder values until these features exist
+    const aiBlogs = totalBlogs;
+    const draftBlogs = 0;
+    const totalViews = 0;
+
+    res.json({
+      totalBlogs,
+      aiBlogs,
+      draftBlogs,
+      totalViews,
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message: "Failed to fetch dashboard statistics",
+    });
+  }
+};
+
+// ================= SEARCH BLOGS =================
+
+const searchBlogs = async (req, res) => {
+  try {
+    const { q } = req.query;
+
+    const result = await pool.query(
+      `
+      SELECT
+        blogs.*,
+        users.fullname
+      FROM blogs
+      JOIN users
+      ON blogs.user_id = users.id
+      WHERE
+        blogs.title ILIKE $1
+        OR blogs.content ILIKE $1
+      ORDER BY blogs.created_at DESC
+      `,
+      [`%${q || ""}%`]
+    );
+
+    res.json(result.rows);
+
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message: "Search failed",
+    });
+  }
+};
+
 module.exports = {
   createBlog,
   getBlogs,
   getBlogById,
   updateBlog,
   deleteBlog,
+  getDashboardStats,
+  searchBlogs,
 };
