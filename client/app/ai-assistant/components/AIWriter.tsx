@@ -10,6 +10,7 @@ export default function AIWriter() {
   const [topic, setTopic] = useState("");
   const [tone, setTone] = useState("Professional");
   const [length, setLength] = useState("Medium");
+  const [category, setCategory] = useState("General");
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -52,10 +53,11 @@ export default function AIWriter() {
       await api.post("/api/blogs", {
         title,
         content,
+        category,
         user_id: user.id,
       });
 
-      alert("Blog Published!");
+      alert("🎉 Blog Published!");
 
       router.push("/dashboard");
 
@@ -112,6 +114,24 @@ export default function AIWriter() {
             onChange={(e) => setTitle(e.target.value)}
             className="w-full rounded-lg bg-gray-800 p-4"
           />
+
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="w-full rounded-lg bg-gray-800 p-4"
+          >
+            <option>General</option>
+            <option>Technology</option>
+            <option>Programming</option>
+            <option>Artificial Intelligence</option>
+            <option>Web Development</option>
+            <option>Cloud Computing</option>
+            <option>Data Science</option>
+            <option>Cybersecurity</option>
+            <option>Career</option>
+            <option>Business</option>
+            <option>Productivity</option>
+          </select>
 
           <textarea
             rows={18}

@@ -8,6 +8,7 @@ type Blog = {
   title: string;
   content: string;
   fullname: string;
+  category: string;
   created_at: string;
 };
 
@@ -39,11 +40,14 @@ export default function BlogCard({ blog }: { blog: Blog }) {
     <div className="group overflow-hidden rounded-2xl border border-gray-800 bg-gray-900 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-900/20">
 
       {/* Top Badges */}
-
       <div className="mb-5 flex flex-wrap items-center gap-3">
 
         <span className="rounded-full bg-purple-600/20 px-3 py-1 text-xs font-semibold text-purple-300">
           🤖 AI Blog
+        </span>
+
+        <span className="rounded-full bg-orange-600/20 px-3 py-1 text-xs font-semibold text-orange-300">
+          🏷 {blog.category}
         </span>
 
         <span className="rounded-full bg-green-600/20 px-3 py-1 text-xs font-semibold text-green-300">
@@ -57,23 +61,19 @@ export default function BlogCard({ blog }: { blog: Blog }) {
       </div>
 
       {/* Title */}
-
       <h2 className="text-3xl font-bold leading-tight text-white transition group-hover:text-blue-400">
         {blog.title}
       </h2>
 
       {/* Description */}
-
       <p className="mt-5 line-clamp-4 leading-8 text-gray-400">
         {blog.content}
       </p>
 
       {/* Divider */}
-
       <div className="my-7 border-t border-gray-800" />
 
       {/* Footer */}
-
       <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
 
         <div>
